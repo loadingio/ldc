@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+mkdir -p dist
+echo "build src/ldc.ls -> dist/ldc.js ..."
+./node_modules/.bin/lsc -cbp src/ldc.ls > dist/ldc.js
+echo "minifying ldc.js ..."
+./node_modules/.bin/uglifyjs dist/ldc.js > dist/ldc.min.js
+echo "deploy into local web ..."
+mkdir -p web/static/assets/lib/ldc/
+cp -R dist/* web/static/assets/lib/ldc/
+echo "done."
+
