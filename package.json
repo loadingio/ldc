@@ -2,6 +2,9 @@
   "author": "zbryikt",
   "name": "@loadingio/ldc",
   "license": "MIT",
+  "files": [
+    "dist/**/*"
+  ],
   "description": "js components/action framework",
   "version": "0.0.2",
   "homepage": "https://github.com/loadingio/ldc",
