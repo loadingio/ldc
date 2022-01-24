@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-mkdir -p dist
-echo "build src/ldc.ls -> dist/ldc.js ..."
-./node_modules/.bin/lsc -cbp src/ldc.ls > dist/ldc.js
-echo "minifying ldc.js ..."
-./node_modules/.bin/uglifyjs dist/ldc.js > dist/ldc.min.js
-echo "deploy into local web ..."
-mkdir -p web/static/assets/lib/ldc/
-cp -R dist/* web/static/assets/lib/ldc/
-echo "done."
 
+rm -rf dist
+mkdir -p dist
+echo "build src/index.ls -> dist/index.js ..."
+./node_modules/.bin/lsc -cp --no-header src/index.ls > dist/index.js
+echo "minifying index.js ..."
+./node_modules/.bin/uglifyjs dist/index.js -c -m > dist/index.min.js
+echo "deploy into local web ..."
+mkdir -p web/static/assets/lib/@loadingio/ldc/
+cp -R dist/* web/static/assets/lib/@loadingio/ldc/
+echo "done."
