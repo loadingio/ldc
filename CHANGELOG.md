@@ -1,5 +1,10 @@
 # Change Logs
 
+## v0.0.4 (upcoming)
+
+ - call modules with a brand new this object.
+
+
 ## v0.0.3
 
  - rename `ldc.js`, `ldc.min.js` to `index.js` and `index.min.js`
