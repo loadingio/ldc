@@ -30,7 +30,12 @@ ldc helps us to maintain the dependency of modules. Define a module as follow:
     ldc.regsiter "module1", <[]>, -> return {foo: -> \bar}
 
 
-declare dependency and load another module:
+A newly created this context can be used in this module:
+
+    ldc.regsiter "module1", <[]>, -> return @ <<< {foo: -> \bar}
+
+
+Declare dependency and load another module:
 
     ldc.regsiter "module2", <[module1]>, ({module1}) ->
 
@@ -39,6 +44,17 @@ the `module1` object sent to module2 handler will be the returned value in the m
 
     ldc.regsiter "module2", <[module1]>, ({module1}) ->
       assert module1.foo! == \bar
+
+Each module function will be called at most once. The returned object in the first call will be used then.
+
+    ldc.regsiter "module1", <[]>, ->
+      console.log "this line runs only once."
+      @foo = (@foo or 0) + 1
+      return @
+    ldc.regsiter "module2", <[module1]>, ({module1}) ->
+      assert module.foo == 1
+    ldc.regsiter "module3", <[module1]>, ({module1}) ->
+      assert module.foo == 1
 
 
 main entry module can be defined by `ldc.app` or by omitting the module name:
