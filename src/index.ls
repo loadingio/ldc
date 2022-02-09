@@ -33,7 +33,7 @@ window.ldc = ldc = do
       for n in m.d => p[n] = _(n)
       m.state = \inited
       local.name = name
-      m.o = m.f(p)
+      m.o = m.f.call (m._o = {}), p
       local.name = null
       return m.o
     for k in (names or @apps) => _(k)

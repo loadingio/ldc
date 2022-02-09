@@ -100,7 +100,7 @@
         }
         m.state = 'inited';
         local.name = name;
-        m.o = m.f(p);
+        m.o = m.f.call(m._o = {}, p);
         local.name = null;
         return m.o;
       };
