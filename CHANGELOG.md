@@ -1,8 +1,10 @@
 # Change Logs
 
-## v0.0.4 (upcoming)
+## v0.0.4
 
  - call modules with a brand new this object.
+ - `register` returns the registered ldc object
+ - accept object or list in `init`.
 
 
 ## v0.0.3

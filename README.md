@@ -5,13 +5,18 @@ loading js component/action framework.
 
 ## API
 
- * ldc.register(name, dep-list, (({dep-list}) ->)) - register a component
+ - `ldc.register(name, dep-list, (({dep-list}) ->))`: register a component
    - while name ignored the module will be an anonymous module and be treated as an app directly.
- * ldc.app(name-list) - set main entry point of component
- * ldc.init(name-list) - force init certain components
- * ldc.on(name, ((...opts)->) - listen to a ldc event
- * ldc.fire(name, ...opts) - fire a ldc event
- * ldc.action(opt1, opt2) - register an action handler.
+   - return the registered ldc object.
+ - `ldc.app(name, ...)`: set main entry point of component
+ - `ldc.init(opt, ...)`: force init components
+   - `opt` is either:
+     - a string: name for specific ldc component.
+     - an object: a ldc object ( returned by `ldc.register` )
+     - an array of either string or objects as above
+ - `ldc.on(name, ((...opts)->)`: listen to a ldc event
+ - `ldc.fire(name, ...opts)`: fire a ldc event
+ - `ldc.action(opt1, opt2)`: register an action handler.
    there are three different cases of usage
    1. opt1 = name, opt2 = object
       register an set of action handler under the namespace with opt1 as its name.

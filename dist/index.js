@@ -5,17 +5,19 @@
   window.ldc = ldc = {
     module: {},
     register: function(n, d, f){
+      var ret;
       if (Array.isArray(n)) {
-        return this.apps.push({
+        this.apps.push(ret = {
           f: d,
           d: n
         });
       } else {
-        return this.module[n] = {
+        ret = this.module[n] = {
           f: f,
           d: d
         };
       }
+      return ret;
     },
     evtHandler: {},
     on: function(n, cb){
@@ -77,8 +79,8 @@
       args = res$;
       return this.apps = this.apps.concat(args);
     },
-    init: function(names){
-      var _, i$, ref$, len$, k, this$ = this, results$ = [];
+    init: function(ns){
+      var _, i$, len$, k, this$ = this, results$ = [];
       _ = function(param){
         var ref$, p, name, m, i$, len$, n;
         ref$ = typeof param === 'object'
@@ -104,16 +106,19 @@
         local.name = null;
         return m.o;
       };
-      for (i$ = 0, len$ = (ref$ = names || this.apps).length; i$ < len$; ++i$) {
-        k = ref$[i$];
+      ns = !ns
+        ? this.apps
+        : Array.isArray(ns)
+          ? ns
+          : [ns];
+      for (i$ = 0, len$ = ns.length; i$ < len$; ++i$) {
+        k = ns[i$];
         results$.push(_(k));
       }
       return results$;
     },
-    run: function(name){
-      this.init(Array.isArray(name)
-        ? name
-        : [name]);
+    run: function(n){
+      this.init(n);
       return null;
     }
   };

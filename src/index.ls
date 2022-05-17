@@ -5,7 +5,10 @@ window.ldc = ldc = do
   # n: module name. if omitted, register an anonymous module as main module.
   # d: module dependency. array of strings.
   # f: module function({modules},{params}). should always return module object.
-  register: (n, d, f) -> if Array.isArray(n) => @apps.push({f: d, d: n}) else @module[n] = {f, d}
+  register: (n, d, f) ->
+    if Array.isArray(n) => @apps.push(ret = {f: d, d: n})
+    else ret = @module[n] = {f, d}
+    ret
   evt-handler: {}
   on: (n, cb) -> @evt-handler.[][n].push cb
   fire: (n, ...v) -> for cb in (@evt-handler[n] or []) => cb.apply @, v
@@ -23,7 +26,7 @@ window.ldc = ldc = do
   act: (n, ...v) -> for cb in (@act-handler[n] or []) => cb.apply @, v
   apps: []
   app: (...args) -> @apps ++= args
-  init: (names) ->
+  init: (ns) ->
     _ = (param) ~>
       [p,name,m] = if typeof(param) == \object => [{},"",param] else [{},param, @module[param]]
       if !m => return null
@@ -36,9 +39,8 @@ window.ldc = ldc = do
       m.o = m.f.call (m._o = {}), p
       local.name = null
       return m.o
-    for k in (names or @apps) => _(k)
-  run: (name) ->
-    @init if Array.isArray(name) => name else [name]
-    return null
-      
+    ns = if !ns => @apps else if Array.isArray(ns) => ns else [ns]
+    for k in ns => _ k
+  run: (n) -> @init n; return null
+
 window.addEventListener \DOMContentLoaded, -> ldc.init!
