@@ -1,5 +1,5 @@
 (function(){
-  var local, lda, ldc;
+  var local, lda, ldc, ref$;
   local = {};
   window.lda = lda = {};
   window.ldc = ldc = {
@@ -81,6 +81,7 @@
     },
     init: function(ns){
       var _, i$, len$, k, this$ = this, results$ = [];
+      local._inited = true;
       _ = function(param){
         var ref$, p, name, m, i$, len$, n;
         ref$ = typeof param === 'object'
@@ -122,7 +123,19 @@
       return null;
     }
   };
-  window.addEventListener('DOMContentLoaded', function(){
-    return ldc.init();
-  });
+  if ((ref$ = document.readyState) === 'complete' || ref$ === 'loaded') {
+    ldc.init();
+  } else {
+    document.addEventListener('readystatechange', function(){
+      var ref$;
+      if (((ref$ = document.readyState) === 'complete' || ref$ === 'loaded') && !local._inited) {
+        return ldc.init();
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function(){
+      if (!local._inited) {
+        return ldc.init();
+      }
+    });
+  }
 }).call(this);

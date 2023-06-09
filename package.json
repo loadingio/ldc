@@ -6,7 +6,7 @@
     "dist/**/*"
   ],
   "description": "js components/action framework",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "homepage": "https://github.com/loadingio/ldc",
   "browser": "dist/index.min.js",
   "main": "dist/index.min.js",
@@ -22,8 +22,8 @@
     "start": "npx server -r web -o true"
   },
   "devDependencies": {
-    "livescript": ">=1.6.0",
+    "livescript": "^1.6.0",
     "uglify-js": "^3.13.1",
-    "@zbryikt/template": "^2.3.33"
+    "@zbryikt/template": "^2.3.45"
   }
 }

@@ -27,6 +27,8 @@ window.ldc = ldc = do
   apps: []
   app: (...args) -> @apps ++= args
   init: (ns) ->
+    # this is used only for controlling auto init below.
+    local._inited = true
     _ = (param) ~>
       [p,name,m] = if typeof(param) == \object => [{},"",param] else [{},param, @module[param]]
       if !m => return null
@@ -43,4 +45,15 @@ window.ldc = ldc = do
     for k in ns => _ k
   run: (n) -> @init n; return null
 
-window.addEventListener \DOMContentLoaded, -> ldc.init!
+# sometimes it's possible that readystate is complete before we reach here.
+# we need the ldc.init called no earlier than DOMContentLoaded, so `interactive` is not reliable.
+if document.readyState in <[complete loaded]> => ldc.init!
+else
+  # and sometimes DOMContentLoaded may not be fired.
+  # such as, when using cloudflare Rocket Launcher
+  # thus, we wait both for readystate update and DOMContentLoaded
+  document.addEventListener \readystatechange, ->
+    # based on https://stackoverflow.com/questions/13346746/document-readystate-on-domcontentloaded
+    # it may be `loaded` too
+    if (document.readyState in <[complete loaded]>) and !local._inited => ldc.init!
+  document.addEventListener \DOMContentLoaded, -> if !local._inited => ldc.init!

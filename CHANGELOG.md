@@ -1,5 +1,12 @@
 # Change Logs
 
+## v0.0.5
+
+ - upgrade dependencies for vulnerability fixing
+ - update auto init code to prevent from missing events issue caused by code order or readystate hijack by frameworks such as Cloudflare.
+   - see [this post](https://community.cloudflare.com/t/domcontentloaded-event-is-missing-when-rocket-loader-is-enabled/393337`) for more information.
+
+
 ## v0.0.4
 
  - call modules with a brand new this object.
