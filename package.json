@@ -6,7 +6,7 @@
     "dist/**/*"
   ],
   "description": "js components/action framework",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "homepage": "https://github.com/loadingio/ldc",
   "browser": "dist/index.min.js",
   "main": "dist/index.min.js",

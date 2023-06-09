@@ -1,5 +1,10 @@
 # Change Logs
 
+## v0.0.6
+
+ - reverse `0.0.5` code for code order issue since it's not a valid solution
+
+
 ## v0.0.5
 
  - upgrade dependencies for vulnerability fixing

@@ -27,8 +27,6 @@ window.ldc = ldc = do
   apps: []
   app: (...args) -> @apps ++= args
   init: (ns) ->
-    # this is used only for controlling auto init below.
-    local._inited = true
     _ = (param) ~>
       [p,name,m] = if typeof(param) == \object => [{},"",param] else [{},param, @module[param]]
       if !m => return null
@@ -45,15 +43,11 @@ window.ldc = ldc = do
     for k in ns => _ k
   run: (n) -> @init n; return null
 
-# sometimes it's possible that readystate is complete before we reach here.
-# we need the ldc.init called no earlier than DOMContentLoaded, so `interactive` is not reliable.
-if document.readyState in <[complete loaded]> => ldc.init!
-else
-  # and sometimes DOMContentLoaded may not be fired.
-  # such as, when using cloudflare Rocket Launcher
-  # thus, we wait both for readystate update and DOMContentLoaded
-  document.addEventListener \readystatechange, ->
-    # based on https://stackoverflow.com/questions/13346746/document-readystate-on-domcontentloaded
-    # it may be `loaded` too
-    if (document.readyState in <[complete loaded]>) and !local._inited => ldc.init!
-  document.addEventListener \DOMContentLoaded, -> if !local._inited => ldc.init!
+# DOMContentLoaded may be fired before this, if script are dynamically re-injected
+# by external scripts such as Rocket Launcher.
+# in this case, it doesn't help even if we check `readyState`
+# since `ldc` expects to be loaded first but init after all scripts are ready -
+# however `readyState` will always be complete if this code is parsed after complete.
+# in this case, user has to call `ldc.init` and trigger `DOMContentLoaded`
+# manually in the end of injected script.
+document.addEventListener \DOMContentLoaded, -> ldc.init!
